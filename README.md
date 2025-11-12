@@ -1,19 +1,21 @@
-WeatherAPI
+# WeatherAPI
 
-There are two ways of fetching the data:
+Fetch weather, air quality, and water quality data using Open-Meteo.
 
-1- Using only APIs.
+## Usage
 
-2- Using a local docker for the weather data and calling the APIs for air quality and water quality data.
+### Option 1: API Only
 
-For 1:
+Use `API_weather_tool.py` to fetch all data directly from APIs.
 
-Use API_weather_tool.py
+### Option 2: Local Docker + APIs
 
-For 2:
+Use a local Docker container for weather data and fetch air/water quality from APIs.
 
-Create a local docker for OpenMeteo data:
+**Setup:**
 
+1. Create a Docker volume:
+   ```bash
     # Create a Docker volume to store weather data
     docker volume create --name open-meteo-data # this is in /var/lib/docker/volumes
 
@@ -25,12 +27,15 @@ Create a local docker for OpenMeteo data:
       --opt o=bind \
         open-meteo-historical
 
-Use OpenMeteoDataFetcher.sh to get all the data from OpenMeteo 
+   ```
 
-Uncomment to select other satelites. I use corpernicus.
+2. Run `OpenMeteoDataFetcher.sh` to download weather data
+   - Set `DAYS` to specify how many days of historical data to fetch
 
-    DAYS represent how many days backwards the fetcher should look into: today - DAYS
+3. Use `LocalOpenMeteoAPI.py` to fetch data from the local Docker container and APIs
 
-Use LocalOpenMeteoAPI.py to fetch data from inside the OpenMeteo docker and air + water APIs
+**Note:** The fetcher uses Copernicus satellite data by default. Edit the script to select other satellites.
 
-More info on building the docker: https://github.com/open-meteo/open-data/tree/main/tutorial_weather_api
+## Resources
+
+- [Open-Meteo Docker Tutorial](https://github.com/open-meteo/open-data/tree/main/tutorial_weather_api)
